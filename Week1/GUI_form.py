@@ -1,11 +1,85 @@
 from tkinter import *
-root=Tk()
-root.title("Random Password Generator")
-root.geometry("400x300")
-root.minsize(400,300)
+import random
+import string
 
-BgPic=PhotoImage(file="Bg.png")
-BgPicLabel=Label(image=BgPic)
-BgPicLabel.pack()
+def generate_password(length, uppercase=False, lowercase=False, digits=False, special_chars=False):
+    characters = []
+
+    #checking if we say yes to uppercase
+    if uppercase:
+        characters.extend(string.ascii_uppercase)
+        #adding upper case letters
+
+    #checking if we say yes to uppercase    
+    if lowercase:
+        characters.extend(string.ascii_lowercase)
+        #adding lower case letters
+
+    #checking if we say yes to uppercase
+    if digits:
+        characters.extend(string.digits)
+        #adding digits 
+
+    #checking if we say yes to uppercase
+    if special_chars:
+        characters.extend(string.punctuation)
+        #adding Special case 
+
+    #checking we did't select yes to any then by default it will give letters in alphabet
+    if not any([uppercase, lowercase, digits, special_chars]):
+        # If no character types are selected, default to lowercase and uppercase letters
+        characters = list(string.ascii_letters)
+
+    #by using random.choice() method of random module we will get random character in out password
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
+
+def menu():
+
+    #menu
+    length = int(input("Enter the length of the password: "))
+    uppercase = input("Include uppercase letters? (y/n): ").lower() == 'y'
+    lowercase = input("Include lowercase letters? (y/n): ").lower() == 'y'
+    digits = input("Include digits? (y/n): ").lower() == 'y'
+    special_chars = input("Include special characters? (y/n): ").lower() == 'y'
+
+    #checking we did't select yes to any then it will ask to select any or terminate the code
+    if not any([uppercase, lowercase, digits, special_chars]):
+        print("At least one character type must be specified.")
+        return
+
+    password = generate_password(length, uppercase, lowercase, digits, special_chars)
+    print("Generated Password:", password)
+
+
+root = Tk()
+root.title("Random Password Generator")
+root.geometry("400x200")
+root.minsize(400, 200)
+
+# Frame for word
+WordFrame = Frame(root, bg="red", borderwidth=5)
+WordFrame.pack(side="left",fill='y')
+
+CapitalCharacterButton = Button(WordFrame, text="A to Z")
+CapitalCharacterButton.pack(pady=10,padx=50)
+
+SmallCharacterButton= Button(WordFrame, text="a to z")
+SmallCharacterButton.pack(pady=10,padx=50)
+
+NumericButton= Button(WordFrame, text="0 to 9")
+NumericButton.pack(pady=10,padx=50)
+
+SpecialCaseButton= Button(WordFrame, text='''!@#$%^& etc''')
+SpecialCaseButton.pack(pady=10,padx=50)
+
+#Generate Button
+
+
+# Frame for display result or password
+DisplayFrame=Frame(root,bg="Green",borderwidth=5)
+DisplayFrame.pack(side=TOP,fill=X)
+GenerateButton=Button(DisplayFrame,text="Generate Password",command=menu)
+GenerateButton.pack()
 
 root.mainloop()
