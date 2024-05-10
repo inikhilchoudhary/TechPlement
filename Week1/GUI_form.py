@@ -1,51 +1,38 @@
 from tkinter import *
+
 import random
 import string
 
 def generate_password(length, uppercase=False, lowercase=False, digits=False, special_chars=False):
     characters = []
 
-    #checking if we say yes to uppercase
     if uppercase:
         characters.extend(string.ascii_uppercase)
-        #adding upper case letters
 
-    #checking if we say yes to uppercase    
     if lowercase:
         characters.extend(string.ascii_lowercase)
-        #adding lower case letters
 
-    #checking if we say yes to uppercase
     if digits:
         characters.extend(string.digits)
-        #adding digits 
 
-    #checking if we say yes to uppercase
     if special_chars:
         characters.extend(string.punctuation)
-        #adding Special case 
 
-    #checking we did't select yes to any then by default it will give letters in alphabet
     if not any([uppercase, lowercase, digits, special_chars]):
-        # If no character types are selected, default to lowercase and uppercase letters
         characters = list(string.ascii_letters)
 
-    #by using random.choice() method of random module we will get random character in out password
     password = ''.join(random.choice(characters) for _ in range(length))
     return password
 
 def menu():
+    length = int(PassVar.get())  # Get length from Entry widget
+    uppercase =Capital.get()   
+    lowercase = Small.get()  
+    digits = Digit.get()  
+    special_chars = Special.get()  
 
-    #menu
-    length = int(input("Enter the length of the password: "))
-    uppercase = input("Include uppercase letters? (y/n): ").lower() == 'y'
-    lowercase = input("Include lowercase letters? (y/n): ").lower() == 'y'
-    digits = input("Include digits? (y/n): ").lower() == 'y'
-    special_chars = input("Include special characters? (y/n): ").lower() == 'y'
-
-    #checking we did't select yes to any then it will ask to select any or terminate the code
-    if not any([uppercase, lowercase, digits, special_chars]):
-        print("At least one character type must be specified.")
+    if length <= 0:
+        print("Length must be a positive integer.")
         return
 
     password = generate_password(length, uppercase, lowercase, digits, special_chars)
@@ -54,32 +41,41 @@ def menu():
 
 root = Tk()
 root.title("Random Password Generator")
-root.geometry("400x200")
-root.minsize(400, 200)
+root.geometry("600 x 200")  # Adjusted window size
+
+root.minsize(400, 150)
+root.maxsize(400, 150)
 
 # Frame for word
-WordFrame = Frame(root, bg="red", borderwidth=5)
-WordFrame.pack(side="left",fill='y')
+WordFrame = Frame(root, borderwidth=5)
+WordFrame.grid(row=0, column=0)
 
-CapitalCharacterButton = Button(WordFrame, text="A to Z")
-CapitalCharacterButton.pack(pady=10,padx=50)
+#check buttons Buttons for letters num symbol 
+Capital=IntVar()
+Small=IntVar()
+Digit=IntVar()
+Special=IntVar()
 
-SmallCharacterButton= Button(WordFrame, text="a to z")
-SmallCharacterButton.pack(pady=10,padx=50)
-
-NumericButton= Button(WordFrame, text="0 to 9")
-NumericButton.pack(pady=10,padx=50)
-
-SpecialCaseButton= Button(WordFrame, text='''!@#$%^& etc''')
-SpecialCaseButton.pack(pady=10,padx=50)
-
-#Generate Button
+Checkbutton(WordFrame, text=" A to Z ",variable=Capital).grid(row=0, column=0)
+Checkbutton(WordFrame, text=" a to z ",variable=Small).grid(row=1, column=0)
+Checkbutton(WordFrame, text=" 0 to 9 ",variable=Digit).grid(row=2, column=0)
+Checkbutton(WordFrame, text='''!@#$%^''',variable=Special).grid(row=3, column=0)
 
 
 # Frame for display result or password
 DisplayFrame=Frame(root,bg="Green",borderwidth=5)
-DisplayFrame.pack(side=TOP,fill=X)
-GenerateButton=Button(DisplayFrame,text="Generate Password",command=menu)
-GenerateButton.pack()
+DisplayFrame.grid(row=0, column=1)  # Adjusted column
+
+#Label for Password for input
+passwordLabel=Label(DisplayFrame,text="Enter Length of Password : ")
+passwordLabel.grid(row=0, column=0)  # Adjusted row and column
+
+#input of pass using Entry Widget
+PassVar=StringVar()
+PassEntry=Entry(DisplayFrame, textvariable=PassVar)
+PassEntry.grid(row=0, column=1)  # Adjusted row and column
+
+#Generate Pass Button
+Button(DisplayFrame,text="Generate Password",command=menu).grid(row=1, column=0, columnspan=2)  # Adjusted row, column, and columnspan
 
 root.mainloop()
