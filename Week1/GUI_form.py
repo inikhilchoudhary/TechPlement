@@ -41,7 +41,7 @@ def menu():
 
 root = Tk()
 root.title("Random Password Generator")
-root.geometry("600 x 200")  # Adjusted window size
+root.geometry("600x200") 
 
 root.minsize(400, 150)
 root.maxsize(400, 150)
