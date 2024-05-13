@@ -1,5 +1,5 @@
 from tkinter import *
-
+import tkinter.messagebox as tmsg
 import random
 import string
 
@@ -36,7 +36,7 @@ def menu():
         return
 
     password = generate_password(length, uppercase, lowercase, digits, special_chars)
-    print("Generated Password:", password)
+    tmsg.showinfo("Generated Password", f"Your password is: {password}")  # Display password in a messagebox
 
 
 root = Tk()
